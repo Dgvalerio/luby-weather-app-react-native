@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/style-prop-object */
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
 import * as Location from 'expo-location';
+import { StatusBar } from 'expo-status-bar';
+
 import WeatherInfo, { IWeather } from './components/WeatherInfo';
 
 const WEATHER_API_KEY = 'b7a0b7b764dc839c05ce7495d53c99e4';
 const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?';
 
-const App = () => {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  main: {
+    justifyContent: 'center',
+    flex: 1,
+  },
+});
+
+const App: FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [currentWeather, setCurrentWeather] = useState<IWeather>();
-  const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
+  const [unitSystem] = useState<'metric' | 'imperial'>('metric');
 
   const load = async () => {
     try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status !== 'granted') {
         setErrorMessage('Access to location is needed to run the App.');
@@ -45,13 +59,13 @@ const App = () => {
     load();
   }, []);
 
-
-  if (!currentWeather) return (
-    <View style={styles.container}>
-      <Text>{errorMessage}</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  if (!currentWeather)
+    return (
+      <View style={styles.container}>
+        <Text>{errorMessage}</Text>
+        <StatusBar style="auto" />
+      </View>
+    );
 
   return (
     <View style={styles.container}>
@@ -62,16 +76,5 @@ const App = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  main: {
-    justifyContent: 'center',
-    flex: 1
-  }
-});
 
 export default App;
