@@ -1,12 +1,15 @@
 /* eslint-disable react/style-prop-object */
-import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import * as Location from 'expo-location';
 import { StatusBar } from 'expo-status-bar';
 
+import ReloadIcon from './components/ReloadIcon';
+import UnitsPicker from './components/UnitsPicker';
 import WeatherInfo from './components/WeatherInfo';
 import { IWeather } from './types';
+import { colors } from './utils';
 
 const WEATHER_API_KEY = 'b7a0b7b764dc839c05ce7495d53c99e4';
 const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?';
@@ -23,11 +26,13 @@ const styles = StyleSheet.create({
 });
 
 const App: FC = () => {
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const [currentWeather, setCurrentWeather] = useState<IWeather>();
-  const [unitSystem] = useState<'metric' | 'imperial'>('metric');
+  const [errorMessage, setErrorMessage] = useState<string | null>();
+  const [currentWeather, setCurrentWeather] = useState<IWeather | null>();
+  const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
 
-  const load = async () => {
+  const load = useCallback(async () => {
+    setCurrentWeather(null);
+    setErrorMessage(null);
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -54,26 +59,35 @@ const App: FC = () => {
     } catch (error) {
       setErrorMessage(error.message);
     }
-  };
+  }, [unitSystem]);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
-  if (!currentWeather)
+  if (errorMessage)
     return (
       <View style={styles.container}>
         <Text>{errorMessage}</Text>
         <StatusBar style="auto" />
       </View>
     );
-
+  if (currentWeather) {
+    return (
+      <View style={styles.container}>
+        <StatusBar style="auto" />
+        <View style={styles.main}>
+          <UnitsPicker unitSystem={unitSystem} setUnitSystem={setUnitSystem} />
+          <ReloadIcon load={load} />
+          <WeatherInfo currentWeather={currentWeather} />
+        </View>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <View style={styles.main}>
-        <WeatherInfo currentWeather={currentWeather} />
-      </View>
+      <ActivityIndicator size="large" color={colors.PRIMARY_COLOR} />
     </View>
   );
 };
