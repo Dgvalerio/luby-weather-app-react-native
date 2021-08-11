@@ -1,64 +1,51 @@
-/* eslint-disable camelcase */
 import React, { FC } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
+
+import { IWeather } from '../types';
+import { colors } from '../utils';
 
 const styles = StyleSheet.create({
   weatherInfo: {
     alignItems: 'center',
   },
+  weatherIcon: {
+    width: 100,
+    height: 100,
+  },
+  weatherDescription: {
+    textTransform: 'capitalize',
+  },
+  textPrimary: {
+    fontSize: 40,
+    color: colors.PRIMARY_COLOR,
+  },
+  textSecondary: {
+    fontSize: 20,
+    color: colors.SECONDARY_COLOR,
+    fontWeight: '500',
+    marginTop: 10,
+  },
 });
-
-export interface IWeather {
-  coord: {
-    lon: number;
-    lat: number;
-  };
-  weather: {
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
-  }[];
-  base: string;
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-    sea_level: number;
-    grnd_level: number;
-  };
-  visibility: number;
-  wind: {
-    speed: number;
-    deg: number;
-    gust: number;
-  };
-  clouds: {
-    all: number;
-  };
-  dt: number;
-  sys: {
-    country: string;
-    sunrise: number;
-    sunset: number;
-  };
-  timezone: number;
-  id: number;
-  name: string;
-  cod: number;
-}
 
 const WeatherInfo: FC<{ currentWeather: IWeather }> = ({
   currentWeather: {
     main: { temp },
+    weather: [details],
+    name,
   },
-}) => (
-  <View style={styles.weatherInfo}>
-    <Text>{temp}</Text>
-  </View>
-);
+}) => {
+  const { icon, main, description } = details;
+  const iconUrl = `https://openweathermap.org/img/wn/${icon}@4x.png`;
+
+  return (
+    <View style={styles.weatherInfo}>
+      <Text>{name}</Text>
+      <Image style={styles.weatherIcon} source={{ uri: iconUrl }} />
+      <Text style={styles.textPrimary}>{temp}°</Text>
+      <Text style={styles.weatherDescription}>{description}</Text>
+      <Text style={styles.textSecondary}>{main}</Text>
+    </View>
+  );
+};
 
 export default WeatherInfo;

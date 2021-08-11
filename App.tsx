@@ -5,7 +5,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import { StatusBar } from 'expo-status-bar';
 
-import WeatherInfo, { IWeather } from './components/WeatherInfo';
+import WeatherInfo from './components/WeatherInfo';
+import { IWeather } from './types';
 
 const WEATHER_API_KEY = 'b7a0b7b764dc839c05ce7495d53c99e4';
 const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?';
