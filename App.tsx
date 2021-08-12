@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 
 import ReloadIcon from './components/ReloadIcon';
 import UnitsPicker from './components/UnitsPicker';
+import WeatherDetails from './components/WeatherDetails';
 import WeatherInfo from './components/WeatherInfo';
 import { IWeather } from './types';
 import { colors } from './utils';
@@ -68,7 +69,8 @@ const App: FC = () => {
   if (errorMessage)
     return (
       <View style={styles.container}>
-        <Text>{errorMessage}</Text>
+        <ReloadIcon load={load} />
+        <Text style={{ textAlign: 'center' }}>{errorMessage}</Text>
         <StatusBar style="auto" />
       </View>
     );
@@ -81,6 +83,10 @@ const App: FC = () => {
           <ReloadIcon load={load} />
           <WeatherInfo currentWeather={currentWeather} />
         </View>
+        <WeatherDetails
+          currentWeather={currentWeather}
+          unitSystem={unitSystem}
+        />
       </View>
     );
   }
