@@ -1,6 +1,7 @@
 /* eslint-disable react/style-prop-object */
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { WEATHER_API_KEY } from 'react-native-dotenv';
 
 import * as Location from 'expo-location';
 import { StatusBar } from 'expo-status-bar';
@@ -12,7 +13,6 @@ import WeatherInfo from './components/WeatherInfo';
 import { IWeather } from './types';
 import { colors } from './utils';
 
-const WEATHER_API_KEY = 'b7a0b7b764dc839c05ce7495d53c99e4';
 const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?';
 
 const styles = StyleSheet.create({
