@@ -47,3 +47,25 @@ export interface ICity {
   state: string;
   country: string;
 }
+
+export interface IResultAPI {
+  components: {
+    country: string;
+    state: string;
+    state_code: string;
+    town: string;
+  };
+  geometry: {
+    lat: number;
+    lng: number;
+  };
+}
+
+export interface IResponseAPI {
+  results: IResultAPI[];
+  status: {
+    code: number;
+    message: string;
+  };
+  total_results: 8;
+}

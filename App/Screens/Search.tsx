@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { CITY_API_KEY } from 'react-native-dotenv';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -8,11 +9,14 @@ import { ICity } from '../Types';
 import { SearchProps } from '../Types/navigation';
 import { colors } from '../Utils';
 
-const { wrapper, row, input, btn, title, subTitle, btnText } =
+const BASE_PLACE_URL = `https://api.opencagedata.com/geocode/v1/json?`;
+
+const { container, row, input, btn, title, subTitle, btnText } =
   StyleSheet.create({
-    wrapper: {
+    container: {
       padding: 8,
       backgroundColor: '#ffffff',
+      flex: 1,
     },
     row: {
       flexDirection: 'row',
@@ -51,14 +55,33 @@ const { wrapper, row, input, btn, title, subTitle, btnText } =
   });
 
 const Search: FC<SearchProps> = ({ navigation }) => {
-  const [city, setCity] = useState('');
+  const [search, setSearch] = useState('');
   const [previousCities] = useState<ICity[]>([
     { city: 'Rio', state: 'RJ', country: 'Brazil' },
     { city: 'Santo', state: 'RJ', country: 'Brazil' },
   ]);
 
-  const handleSubmit = () => {
-    navigation.navigate('Weather');
+  const handleSubmit = async () => {
+    if (!search || search === '') {
+      alert('Você precisa preencher o campo de busca!');
+      return;
+    }
+
+    const weatherURL = `${BASE_PLACE_URL}key=${CITY_API_KEY}&q=${search}`;
+
+    try {
+      const response = await fetch(weatherURL);
+
+      const result = await response.json();
+
+      if (response.ok) {
+        navigation.navigate('Places');
+      } else {
+        alert(result.status.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleLocate = () => {
@@ -66,13 +89,13 @@ const Search: FC<SearchProps> = ({ navigation }) => {
   };
 
   return (
-    <View style={wrapper}>
+    <View style={container}>
       <Text style={title}>Type your location here:</Text>
       <TextInput
         style={input}
         placeholder="City"
-        onChangeText={(text) => setCity(text)}
-        defaultValue={city}
+        onChangeText={(text) => setSearch(text)}
+        defaultValue={search}
       />
       <View style={row}>
         <Pressable style={btn} onPress={handleSubmit}>
