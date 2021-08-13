@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-import { IWeather } from '../types';
-import { colors } from '../utils';
+import { IWeather } from '../Types';
+import { colors } from '../Utils';
 
 const styles = StyleSheet.create({
   weatherInfo: {

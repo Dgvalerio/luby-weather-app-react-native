@@ -80,7 +80,8 @@
     ],
     "@typescript-eslint/no-shadow": [
       "error"
-    ]
+    ],
+    "react/style-prop-object": "off"
   },
   "settings": {
     "import/resolver": {

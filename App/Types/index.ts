@@ -41,3 +41,9 @@ export interface IWeather {
   name: string;
   cod: number;
 }
+
+export interface ICity {
+  city: string;
+  state: string;
+  country: string;
+}

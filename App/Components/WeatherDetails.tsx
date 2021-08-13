@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { IWeather } from '../types';
-import { colors } from '../utils';
+import { IWeather } from '../Types';
+import { colors } from '../Utils';
 
 const styles = StyleSheet.create({
   weatherDetails: {

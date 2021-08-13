@@ -1,4 +1,3 @@
-/* eslint-disable react/style-prop-object */
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { WEATHER_API_KEY } from 'react-native-dotenv';
@@ -6,12 +5,12 @@ import { WEATHER_API_KEY } from 'react-native-dotenv';
 import * as Location from 'expo-location';
 import { StatusBar } from 'expo-status-bar';
 
-import ReloadIcon from './components/ReloadIcon';
-import UnitsPicker from './components/UnitsPicker';
-import WeatherDetails from './components/WeatherDetails';
-import WeatherInfo from './components/WeatherInfo';
-import { IWeather } from './types';
-import { colors } from './utils';
+import ReloadIcon from '../Components/ReloadIcon';
+import UnitsPicker from '../Components/UnitsPicker';
+import WeatherDetails from '../Components/WeatherDetails';
+import WeatherInfo from '../Components/WeatherInfo';
+import { IWeather } from '../Types';
+import { colors } from '../Utils';
 
 const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?';
 
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const App: FC = () => {
+const Weather: FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const [currentWeather, setCurrentWeather] = useState<IWeather | null>();
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
@@ -98,4 +97,4 @@ const App: FC = () => {
   );
 };
 
-export default App;
+export default Weather;

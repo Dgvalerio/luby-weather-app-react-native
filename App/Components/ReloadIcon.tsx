@@ -3,7 +3,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { colors } from '../utils';
+import { colors } from '../Utils';
 
 const styles = StyleSheet.create({
   reloadIcon: {
