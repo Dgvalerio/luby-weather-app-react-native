@@ -1,8 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import PreviousCity from '../Components/PreviousCity';
-import { ICity } from '../Types';
+import Place from '../Components/Place';
 import { PlacesProps } from '../Types/navigation';
 
 const { container, title } = StyleSheet.create({
@@ -18,17 +17,20 @@ const { container, title } = StyleSheet.create({
   },
 });
 
-const Places: FC<PlacesProps> = () => {
-  const [previousCities] = useState<ICity[]>([
-    { city: 'Rio', state: 'RJ', country: 'Brazil' },
-    { city: 'Santo', state: 'RJ', country: 'Brazil' },
-  ]);
+const Places: FC<PlacesProps> = ({
+  route: {
+    params: { places, search },
+  },
+  navigation,
+}) => {
+  const handleShowWeather = (latitude: number, longitude: number) =>
+    navigation.navigate('Weather', { latitude, longitude });
 
   return (
     <View style={container}>
-      <Text style={title}>Results for ZZZ</Text>
-      {previousCities.map((c) => (
-        <PreviousCity key={JSON.stringify(c)} city={c} />
+      <Text style={title}>Results for &ldquo;{search}&rdquo;</Text>
+      {places.map((p) => (
+        <Place key={JSON.stringify(p)} place={p} to={handleShowWeather} />
       ))}
     </View>
   );

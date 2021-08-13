@@ -1,10 +1,12 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { IResultAPI } from './index';
+
 export type RootStackParamList = {
-  Places: undefined;
+  Places: { search: string; places: IResultAPI[] };
   Search: undefined;
-  Weather: undefined;
+  Weather: { longitude: number; latitude: number };
 };
 
 export type PlacesScreenRouteProp = RouteProp<RootStackParamList, 'Places'>;

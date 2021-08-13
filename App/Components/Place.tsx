@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { ICity } from '../Types';
+import { IResultAPI } from '../Types';
 import { colors } from '../Utils';
 
 const { row, bold, inside } = StyleSheet.create({
@@ -26,12 +26,19 @@ const { row, bold, inside } = StyleSheet.create({
   },
 });
 
-const PreviousCity: FC<{ city: ICity }> = ({
-  city: { city, state, country },
+const Place: FC<{
+  place: IResultAPI;
+  to: (latitude: number, longitude: number) => void;
+}> = ({
+  place: {
+    components: { town, state_code: state, country },
+    geometry: { lat, lng },
+  },
+  to,
 }) => (
-  <View style={row}>
+  <Pressable style={row} onPress={() => to(lat, lng)}>
     <View style={inside}>
-      <Text style={bold}>{city}</Text>
+      <Text style={bold}>{town}</Text>
       <Text>
         {state}, {country}
       </Text>
@@ -41,7 +48,7 @@ const PreviousCity: FC<{ city: ICity }> = ({
       size={24}
       color={colors.PRIMARY_COLOR}
     />
-  </View>
+  </Pressable>
 );
 
-export default PreviousCity;
+export default Place;

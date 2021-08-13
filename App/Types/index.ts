@@ -53,7 +53,9 @@ export interface IResultAPI {
     country: string;
     state: string;
     state_code: string;
-    town: string;
+    town?: string;
+    hamlet?: string;
+    city?: string;
   };
   geometry: {
     lat: number;
