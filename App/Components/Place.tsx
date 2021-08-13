@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { actions } from '../Store/search/slice';
 import { IResultAPI } from '../Types';
 import { colors } from '../Utils';
 
@@ -29,26 +31,33 @@ const { row, bold, inside } = StyleSheet.create({
 const Place: FC<{
   place: IResultAPI;
   to: (latitude: number, longitude: number) => void;
-}> = ({
-  place: {
+}> = ({ place, to }) => {
+  const dispatch = useDispatch();
+  const {
     components: { town, state_code: state, country },
     geometry: { lat, lng },
-  },
-  to,
-}) => (
-  <Pressable style={row} onPress={() => to(lat, lng)}>
-    <View style={inside}>
-      <Text style={bold}>{town}</Text>
-      <Text>
-        {state}, {country}
-      </Text>
-    </View>
-    <MaterialCommunityIcons
-      name="arrow-right"
-      size={24}
-      color={colors.PRIMARY_COLOR}
-    />
-  </Pressable>
-);
+  } = place;
+
+  const handlePress = () => {
+    dispatch(actions.addToHistory(place));
+    to(lat, lng);
+  };
+
+  return (
+    <Pressable style={row} onPress={handlePress}>
+      <View style={inside}>
+        <Text style={bold}>{town}</Text>
+        <Text>
+          {state}, {country}
+        </Text>
+      </View>
+      <MaterialCommunityIcons
+        name="arrow-right"
+        size={24}
+        color={colors.PRIMARY_COLOR}
+      />
+    </Pressable>
+  );
+};
 
 export default Place;

@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { CITY_API_KEY } from 'react-native-dotenv';
+import { useSelector } from 'react-redux';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
@@ -80,17 +81,8 @@ const {
 const Search: FC<SearchProps> = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [previousSearches] = useState<IResultAPI[]>([
-    {
-      geometry: { lat: 0, lng: 0 },
-      components: {
-        state_code: 'RJ',
-        town: 'Rio',
-        state: 'Rio de Janeiro',
-        country: 'Brazil',
-      },
-    },
-  ]);
+
+  const previousSearches = useSelector((state) => state.search.history);
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -187,9 +179,13 @@ const Search: FC<SearchProps> = ({ navigation }) => {
         </Pressable>
       </View>
       <Text style={subTitle}>Previous Searches</Text>
-      {previousSearches.map((p) => (
-        <Place key={JSON.stringify(p)} place={p} to={handleShowWeather} />
-      ))}
+      {previousSearches.length > 0 ? (
+        previousSearches.map((p) => (
+          <Place key={JSON.stringify(p)} place={p} to={handleShowWeather} />
+        ))
+      ) : (
+        <Text>There are no previous searches.</Text>
+      )}
     </View>
   );
 };

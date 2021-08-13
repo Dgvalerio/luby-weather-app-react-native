@@ -71,3 +71,7 @@ export interface IResponseAPI {
   };
   total_results: 8;
 }
+
+export interface ISearchStore {
+  history: IResultAPI[];
+}
